@@ -18,7 +18,7 @@ The `main()` function handles:
    - `root`: Required, specifies the top-level directory to process
    - `--hidden`: Flag to include hidden files
    - `--all`: Flag to include all files (if not set, only code files will be documented)
-   - `--filewise`: Flag to generate separate MD files for each code file (if not set, all documentation will put put one one file)
+   - `--filewise`: Flag to generate separate MD files for each code file (if not set, all documentation will be put in one file)
    - `--langs`: Specific languages to include (space-separated extensions)
    - `--github`: GitHub repository URL to document
    - `--api_key`: Claude API key (Not required if you already have env:ANTHROPIC_API_KEY set)
