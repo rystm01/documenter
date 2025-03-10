@@ -21,7 +21,7 @@ The `main()` function handles:
    - `--filewise`: Flag to generate separate MD files for each code file (if not set, all documentation will put put one one file)
    - `--langs`: Specific languages to include (space-separated extensions)
    - `--github`: GitHub repository URL to document
-   - `--api_key`: Claude API key
+   - `--api_key`: Claude API key (Not required if you already have env:ANTHROPIC_API_KEY set)
 
 2. GitHub Repository Handling:
    - Clones the repository if a GitHub URL is provided
@@ -41,5 +41,3 @@ python main.py ./my_project --hidden --langs ".py .js"
 ```
 
 This would generate documentation for Python and JavaScript files in the my_project directory, including hidden files.
-
-# documenter
