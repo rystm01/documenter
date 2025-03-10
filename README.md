@@ -20,7 +20,7 @@ The `main()` function handles:
    - `--all`: Flag to include all files (if not set, only code files will be documented)
    - `--filewise`: Flag to generate separate MD files for each code file (if not set, all documentation will be put in one file)
    - `--langs`: Specific languages to include (space-separated extensions)
-   - `--github`: GitHub repository URL to document
+   - `--github`: GitHub repository URL to document. If used, 'root' must be set to the name of the repo
    - `--api_key`: Claude API key (Not required if you already have env:ANTHROPIC_API_KEY set)
 
 2. GitHub Repository Handling:
