@@ -64,6 +64,20 @@ CODE_EXTENSIONS = {
     '.scss',  # Sass (CSS preprocessor)
     '.ts',  # TypeScript
 }
+
+TOGETHER_MODELS = {"zero-one-ai/Yi-34B-Chat",
+"deepseek-ai/deepseek-llm-67b-chat",
+"google/gemma-2b-it",
+"Gryphe/MythoMax-L2-13b-Lite",
+"meta-llama/Llama-3-70b-chat-hf",	
+"meta-llama/Meta-Llama-3-8B-Instruct-Turbo"}
+OPENAI_MODELS = {"gpt-4o-mini-2024-07-18",
+                 "o3-mini-2025-01-31",
+                 "gpt-4o-2024-08-06"}
+ANTHROPIC_MODELS = {"claude-3-7-sonnet-latest",
+                    "claude-3-5-haiku-20241022",
+                    "claude-3-5-sonnet-latest",
+                    "claude-3-opus-latest"}
 def main():
   parser = argparse.ArgumentParser(description="Parse command line arguments")
   parser.add_argument('root', type=str, help='The top level directory to process')
@@ -73,24 +87,45 @@ def main():
 
   parser.add_argument('--langs', type=str, help='Languages to include (e.g., .js .py)', default="")
   parser.add_argument('--github', type=str, help='link to a github repo to document', default="")
-  parser.add_argument('--api_key', type=str, help='your claude api key', default="")
+  parser.add_argument('--api_key', type=str, help='your claude api key  ', default="")
+  parser.add_argument('--provider', type=str, help='your provider: claude, openai, or together', default="")
+  parser.add_argument('--model', type=str, help="the model you want to use", default="")
 
   # Parse the arguments
   args = parser.parse_args()
 
-  if args.github is not None:
+
+  if args.github != "":
      print('here')
      subprocess.run(['git', 'clone', args.github])
 
 
-  file, hidden, all_ = args.root, args.hidden, args.all
+  file, hidden, all_, api_key, provider, model = args.root, args.hidden, args.all, args.api_key, args.provider, args.model
   if args.langs:
       langs_list = set(args.langs.split())
   else:
       langs_list = CODE_EXTENSIONS
+  
+  if provider=='together':
+     if model not in TOGETHER_MODELS:
+        raise ValueError("""Invalid model. Currently supported together AI models are zero-one-ai/Yi-34B-Chat,
+deepseek-ai/deepseek-llm-67b-chat,
+google/gemma-2b-it,
+Gryphe/MythoMax-L2-13b-Lite,
+meta-llama/Llama-3-70b-chat-hf,	and
+meta-llama/Meta-Llama-3-8B-Instruct-Turbo""")
+  elif provider=='claude':
+     if model not in ANTHROPIC_MODELS:
+        raise ValueError("Invalid model. Currently supported claude models are: claude-3-7-sonnet-latest ",
+                    "claude-3-5-haiku-20241022 ",
+                    "claude-3-5-sonnet-latest ", 'and ',
+                    "claude-3-opus-latest ")
 
-  documenter = Documenter(file)
+
+
+  documenter = Documenter(file, api_key=api_key, provider=provider, model=model)
   documenter.document(file, 0, hidden, all_, extensions=langs_list)
+  documenter.summarize()
 
   if args.github:
      os.chdir(file)
@@ -102,7 +137,7 @@ def main():
      os.chdir('..')
      print(os.getcwd())
      print(file)
-     subprocess.run(['powershell', 'rm', '-R', file, '-Force'])
+     subprocess.run(['rm', '-rf', file])
 
 if __name__ == "__main__":
    main()

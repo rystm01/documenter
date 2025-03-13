@@ -1,0 +1,12 @@
+
+
+{
+  "root"     :"filename",
+  "github"   : "link",
+  "hidden"   : "bool",
+  "all"      : "bool",
+  "langs"    : ["lang1", "lang2"],
+  "api_key"  : "key",
+  "provider" :"provider",
+  "filewise" :"bool"
+}
